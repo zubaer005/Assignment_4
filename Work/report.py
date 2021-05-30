@@ -4,7 +4,7 @@
 import csv
  
 def read_portfolio(filename):
-    '''Computes the total cost (shares*price) of a portfolio file'''
+    '''Read portfolio file'''
     portfolio = []
 
     with open(filename, 'rt') as f:
@@ -22,7 +22,7 @@ def read_portfolio(filename):
 
 
 def read_prices(filename):
-     
+    '''Read PRICE file''' 
     prices = {}
     with open(filename) as f:
         rows = csv.reader(f)
@@ -34,6 +34,7 @@ def read_prices(filename):
     return prices
 
 def make_report(portfolio, prices):
+    '''DO CALCULATIONA AND MAKE THE REPORT''' 
     report = []
     for stock in portfolio:
         price_now= prices[stock['name']]
@@ -42,27 +43,24 @@ def make_report(portfolio, prices):
         report.append(summary)
     return report
  
-portfolio = read_portfolio('Data/portfolio.csv')
-prices    = read_prices('Data/prices.csv')
+ 
+
+def print_data(report):
+    '''PRINT THE REPORT''' 
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    print('%10s %10s %10s %10s' % headers)
+    print(('-' * 10 + ' ') * len(headers))
+    for row in report:
+        print('%10s %10d  $%10.2f %10.2f' % row)
 
 
-total =0.0 
-for s in portfolio:
-        total += s['shares']*s['price']
+def read_file(portfoliofile,pricefile):
+    '''READ TWO FILES AND CALL OTHER FUNTION''' 
+    portfolio = read_portfolio(portfoliofile)
+    prices    = read_prices(pricefile)
 
-print('Total cost', total)
+    report = make_report(portfolio, prices) 
+    print_data(report)
 
 
-total_value = 0.0
-for s in portfolio:
-    total_value += s['shares']*prices[s['name']]
-
-print('Current value', total_value)
-print('Gain', total_value - total)
-
-report = make_report(portfolio, prices)
-headers = ('Name', 'Shares', 'Price', 'Change')
-print('%10s %10s %10s %10s' % headers)
-print(('-' * 10 + ' ') * len(headers))
-for row in report:
-    print('%10s %10d  $%10.2f %10.2f' % row)
+read_file('Data/portfolio.csv', 'Data/prices.csv')
