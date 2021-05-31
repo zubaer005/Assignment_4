@@ -39,7 +39,14 @@ def read_file(portfoliofile,pricefile):
     prices    = read_prices(pricefile)
 
     report = make_report(portfolio, prices) 
-    '''print_data(report)'''
+    print_data(report)
 
 
-read_file('Data/portfolio.csv', 'Data/prices.csv')
+def main(args):
+    if len(args) != 3:
+        raise SystemExit('Usage: %s portfile pricefile' % args[0])
+    read_file(args[1], args[2])
+
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
