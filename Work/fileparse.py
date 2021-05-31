@@ -3,10 +3,14 @@
 # Exercise 3.3
 
 import csv
-def parse_csv(filename, select=None, types=None, has_headers=True,  delimiter=','):
+
+def parse_csv(filename, select=None, types=None, has_headers=True,  delimiter=',', silence_errors=False ):
     '''
     Parse a CSV file into a list of records
     '''
+    if select and not has_headers:
+        raise RuntimeError('No column selected')
+
     with open(filename) as f:
         rows = csv.reader(f, delimiter=delimiter)
 
@@ -28,7 +32,11 @@ def parse_csv(filename, select=None, types=None, has_headers=True,  delimiter=',
             if indices:
                 row = [ row[index] for index in indices ]
             if types:
-                row = [func(val) for func, val in zip(types, row) ]
+                try:
+                    row = [func(val) for func, val in zip(types, row) ]
+                except ValueError as error:
+                    if not silence_errors:
+                        print(f"Couldn't convert {row}. Error: {error}")
 
             # Make a dictionary
             if headers:
