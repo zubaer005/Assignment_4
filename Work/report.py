@@ -1,13 +1,15 @@
 # report.py
 #
 # Exercise 2.4
-import csv
+
 import fileparse
+
 def read_portfolio(filename):
     '''Read portfolio file'''
      
     with open(filename) as lines:
-        return fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+        print( fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float]))
+
 
 
 def read_prices(filename):
@@ -41,13 +43,17 @@ def read_file(portfoliofile,pricefile):
     portfolio = read_portfolio(portfoliofile)
     prices    = read_prices(pricefile)
 
-    report = make_report(portfolio, prices) 
-    print_data(report)
+   # report = make_report(portfolio, prices) 
+    #print_data(report)
+
+    print(portfolio)
 
 
 def main(args):
+    
     if len(args) != 3:
         raise SystemExit('Usage: %s portfile pricefile' % args[0])
+   
     read_file(args[1], args[2])
 
 if __name__ == '__main__':
